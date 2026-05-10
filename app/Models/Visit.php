@@ -11,8 +11,14 @@ class Visit extends Model
         'solution',
         'notes',
         'visit_date',
+        'is_completed',
         'user_id',
         'patient_id'
+    ];
+
+    protected $casts = [
+        'is_completed' => 'boolean',
+        'visit_date'   => 'datetime',
     ];
     public function user(){
         return $this->belongsTo(User::class);

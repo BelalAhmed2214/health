@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Patient extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'name',
         'national_id',
@@ -16,6 +18,7 @@ class Patient extends Model
         'governorate',
         'address',
         'user_id',
+        ''
     ];
     public function user()
     {

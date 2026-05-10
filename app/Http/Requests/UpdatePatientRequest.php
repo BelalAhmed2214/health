@@ -23,13 +23,14 @@ class UpdatePatientRequest extends FormRequest
      */
     public function rules(): array
     {
+        $patientId = $this->route('patient');
         return [
             'name' => ['nullable', 'string', 'max:255'],
 
             'national_id' => [
                 'nullable',
                 'string',
-                Rule::unique('patients', 'national_id')->ignore($this->patient->id),
+                Rule::unique('patients', 'national_id')->ignore($patientId),
             ],
             'mobile' => ['nullable', 'string'],
             'date_of_birth' => ['nullable', 'date'],

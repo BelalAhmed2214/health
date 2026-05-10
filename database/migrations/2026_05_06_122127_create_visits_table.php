@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('solution')->nullable();
             $table->text('notes')->nullable();
             $table->timestamp('visit_date')->nullable();
+            $table->boolean('is_completed')->default(false);
             $table->timestamps();
         });
     }

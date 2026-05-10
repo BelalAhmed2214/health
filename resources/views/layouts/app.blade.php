@@ -38,16 +38,49 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{ route('users.index') }}">Users</a>
+                        <a class="nav-link {{ request()->routeIs('dashboard') ? 'active fw-semibold' : '' }}" href="{{ route('dashboard') }}">
+                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('patients.index') }}">Patients</a>
+                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active fw-semibold' : '' }}" href="{{ route('users.index') }}">
+                            <i class="bi bi-person-badge me-1"></i>Users
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('visits.index') }}">Visits</a>
+                        <a class="nav-link {{ request()->routeIs('patients.*') ? 'active fw-semibold' : '' }}" href="{{ route('patients.index') }}">
+                            <i class="bi bi-people me-1"></i>Patients
+                        </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('visits.*') ? 'active fw-semibold' : '' }}" href="{{ route('visits.index') }}">
+                            <i class="bi bi-file-earmark-medical me-1"></i>Visits
+                        </a>
+                    </li>
+                    @auth
+                    <li class="nav-item ms-3 dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-person-circle fs-5"></i>
+                            <span>{{ Auth::user()->name }}</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <span class="dropdown-item-text text-muted small">{{ Auth::user()->email }}</span>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="dropdown-item text-danger">
+                                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+                    @endauth
                 </ul>
             </div>
         </div>

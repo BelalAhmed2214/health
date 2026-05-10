@@ -20,7 +20,7 @@
 <div class="row mb-4 align-items-center">
     <div class="col-md-6">
         <h2 class="text-secondary fw-bold mb-0">
-            <i class="bi bi-file-earmark-medical text-primary me-2"></i>Consultation Logs
+            <i class="bi bi-file-earmark-medical text-primary me-2"></i>Visits Management
         </h2>
     </div>
     <div class="col-md-6 text-end">

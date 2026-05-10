@@ -4,22 +4,22 @@
 
 @section('content')
 @if (session('success'))
-    <div class="alert alert-success alert-dismissible fade show shadow-sm border-0 border-start border-success border-4 mb-4" role="alert">
-        <div class="d-flex align-items-center">
-            <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
-            <div>
-                <strong class="d-block text-success">Action Completed</strong>
-                <span class="text-secondary">{{ session('success') }}</span>
-            </div>
+<div class="alert alert-success alert-dismissible fade show shadow-sm border-0 border-start border-success border-4 mb-4" role="alert">
+    <div class="d-flex align-items-center">
+        <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
+        <div>
+            <strong class="d-block text-success">Action Completed</strong>
+            <span class="text-secondary">{{ session('success') }}</span>
         </div>
-        
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 @endif
 <div class="row mb-4 align-items-center">
     <div class="col-md-6">
         <h2 class="text-secondary fw-bold mb-0">
-            <i class="bi bi-people-fill me-2 text-primary"></i>Patients Registry
+            <i class="bi bi-people-fill me-2 text-primary"></i>Patients Management
         </h2>
     </div>
     <div class="col-md-6 text-end">
@@ -29,12 +29,71 @@
     </div>
 </div>
 
-<!-- @if (session('success'))
-<div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-    <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div>
-@endif -->
+
+
+@php
+    $filterField = request('filter_by', 'name');
+    $filterValue = request('search', '');
+    $dateFrom    = request('date_from', '');
+    $dateTo      = request('date_to', '');
+    $hasFilters  = $filterValue || $dateFrom || $dateTo;
+    $placeholders = ['name' => 'Search by patient name...', 'national_id' => 'Search by national ID...', 'mobile' => 'Search by mobile number...'];
+@endphp
+
+<form method="GET" action="{{ route('patients.index') }}" class="mb-4">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label text-muted small mb-1">Filter By</label>
+            <select name="filter_by" class="form-select form-select-sm shadow-sm" id="filterBySelect">
+                <option value="name"        {{ $filterField === 'name'        ? 'selected' : '' }}>Patient Name</option>
+                <option value="national_id" {{ $filterField === 'national_id' ? 'selected' : '' }}>National ID</option>
+                <option value="mobile"      {{ $filterField === 'mobile'      ? 'selected' : '' }}>Mobile No.</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label text-muted small mb-1">Search</label>
+            <input type="text" name="search" value="{{ $filterValue }}"
+                class="form-control form-control-sm shadow-sm"
+                placeholder="{{ $placeholders[$filterField] }}"
+                id="searchInput">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label text-muted small mb-1">
+                <i class="bi bi-calendar-event me-1"></i>Registered From
+            </label>
+            <input type="date" name="date_from" value="{{ $dateFrom }}"
+                class="form-control form-control-sm shadow-sm">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label text-muted small mb-1">
+                <i class="bi bi-calendar-event-fill me-1"></i>Registered To
+            </label>
+            <input type="date" name="date_to" value="{{ $dateTo }}"
+                class="form-control form-control-sm shadow-sm">
+        </div>
+        <div class="col-md-1 d-flex gap-2">
+            <button type="submit" class="btn btn-primary btn-sm w-100 shadow-sm" title="Search">
+                <i class="bi bi-search"></i>
+            </button>
+            @if($hasFilters)
+            <a href="{{ route('patients.index') }}" class="btn btn-outline-secondary btn-sm shadow-sm" title="Clear">
+                <i class="bi bi-x-lg"></i>
+            </a>
+            @endif
+        </div>
+    </div>
+</form>
+
+<script>
+    const placeholders = {
+        name: 'Search by patient name...',
+        national_id: 'Search by national ID...',
+        mobile: 'Search by mobile number...'
+    };
+    document.getElementById('filterBySelect').addEventListener('change', function () {
+        document.getElementById('searchInput').placeholder = placeholders[this.value] || '';
+    });
+</script>
 
 <div class="card shadow-sm border-0">
     <div class="card-body p-0">
@@ -47,6 +106,7 @@
                         <th class="py-3">Mobile No.</th>
                         <th class="py-3">Governorate</th>
                         <th class="py-3">Registered By</th>
+                        <th class="py-3">Registered Date</th>
                         <th class="text-end pe-4 py-3">Actions</th>
                     </tr>
                 </thead>
@@ -81,6 +141,12 @@
                             </span>
                         </td>
 
+                        <td>
+                            <span class="text-muted small">
+                                <i class="bi bi-calendar3 me-1"></i>{{ $patient->created_at->format('d M Y') }}
+                            </span>
+                        </td>
+
                         <td class="text-end pe-4">
                             <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-success me-1 shadow-sm">
                                 <i class="bi bi-file-earmark-medical-fill me-1"></i> Add Visit
@@ -109,7 +175,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="6" class="text-center py-5 text-muted">
+                        <td colspan="7" class="text-center py-5 text-muted">
                             <i class="bi bi-folder-x fs-1 text-secondary d-block mb-2"></i>
                             <span class="fw-semibold">No patients recorded yet.</span>
                         </td>
@@ -119,5 +185,9 @@
             </table>
         </div>
     </div>
+    <div class="mt-4 d-flex justify-content-center">
+        {{ $patients->links() }}
+    </div>
 </div>
+
 @endsection

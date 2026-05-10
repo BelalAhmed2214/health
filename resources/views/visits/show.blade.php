@@ -83,7 +83,7 @@
                     <div>
                         <small class="text-muted d-block">Attending Clinical Recorder</small>
                         <span class="fw-semibold text-dark">
-                            <i class="bi bi-person-badge-fill text-muted me-1"></i>Dr. {{ $visit->user->name ?? 'System' }}
+                            <i class="bi bi-person-badge-fill text-muted me-1"></i>{{ $visit->user->name ?? 'System' }}
                         </span>
                     </div>
                 </div>

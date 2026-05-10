@@ -5,7 +5,7 @@
 @section('content')
 <div class="row mb-3">
     <div class="col-md-6">
-        <h2 class="text-secondary fw-bold">Users Management</h2>
+        <h2 class="text-secondary fw-bold"> <i class="bi bi-people-fill me-2 text-primary"></i>Users Management</h2>
     </div>
     <div class="col-md-6 text-end">
         <a href="{{ route('users.create') }}" class="btn btn-success">
