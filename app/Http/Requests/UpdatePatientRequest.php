@@ -25,19 +25,20 @@ class UpdatePatientRequest extends FormRequest
     {
         $patientId = $this->route('patient');
         return [
-            'name' => ['nullable', 'string', 'max:255'],
-
-            'national_id' => [
-                'nullable',
-                'string',
-                Rule::unique('patients', 'national_id')->ignore($patientId),
-            ],
-            'mobile' => ['nullable', 'string'],
-            'date_of_birth' => ['nullable', 'date'],
+            'name'           => ['nullable', 'string', 'max:255'],
+            'national_id'    => ['nullable', 'string', Rule::unique('patients', 'national_id')->ignore($patientId)],
+            'mobile'         => ['nullable', 'string'],
+            'date_of_birth'  => ['nullable', 'date'],
             'marital_status' => ['nullable', 'string'],
             'children_count' => ['nullable', 'integer'],
-            'governorate' => ['nullable', 'string'],
-            'address' => ['nullable', 'string'],
+            'governorate'    => ['nullable', 'string'],
+            'address'        => ['nullable', 'string'],
+            'problem'        => ['nullable', 'string'],
+            'solution'       => ['nullable', 'string'],
+            'notes'          => ['nullable', 'array'],
+            'notes.*'        => ['nullable', 'string'],
+            'visit_date'     => ['nullable', 'date'],
+            'is_completed'   => ['nullable', 'boolean'],
         ];
     }
 }

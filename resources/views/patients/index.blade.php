@@ -36,13 +36,14 @@
     $filterValue = request('search', '');
     $dateFrom    = request('date_from', '');
     $dateTo      = request('date_to', '');
-    $hasFilters  = $filterValue || $dateFrom || $dateTo;
+    $isCompleted = request('is_completed', '');
+    $hasFilters  = $filterValue || $dateFrom || $dateTo || $isCompleted !== '';
     $placeholders = ['name' => 'Search by patient name...', 'national_id' => 'Search by national ID...', 'mobile' => 'Search by mobile number...'];
 @endphp
 
 <form method="GET" action="{{ route('patients.index') }}" class="mb-4">
     <div class="row g-2 align-items-end">
-        <div class="col-md-3">
+        <div class="col-md-2">
             <label class="form-label text-muted small mb-1">Filter By</label>
             <select name="filter_by" class="form-select form-select-sm shadow-sm" id="filterBySelect">
                 <option value="name"        {{ $filterField === 'name'        ? 'selected' : '' }}>Patient Name</option>
@@ -50,12 +51,20 @@
                 <option value="mobile"      {{ $filterField === 'mobile'      ? 'selected' : '' }}>Mobile No.</option>
             </select>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <label class="form-label text-muted small mb-1">Search</label>
             <input type="text" name="search" value="{{ $filterValue }}"
                 class="form-control form-control-sm shadow-sm"
                 placeholder="{{ $placeholders[$filterField] }}"
                 id="searchInput">
+        </div>
+        <div class="col-md-2">
+            <label class="form-label text-muted small mb-1">Status</label>
+            <select name="is_completed" class="form-select form-select-sm shadow-sm">
+                <option value=""  {{ $isCompleted === ''  ? 'selected' : '' }}>All</option>
+                <option value="0" {{ $isCompleted === '0' ? 'selected' : '' }}>Pending</option>
+                <option value="1" {{ $isCompleted === '1' ? 'selected' : '' }}>Completed</option>
+            </select>
         </div>
         <div class="col-md-2">
             <label class="form-label text-muted small mb-1">
@@ -105,6 +114,7 @@
                         <th class="py-3">National ID</th>
                         <th class="py-3">Mobile No.</th>
                         <th class="py-3">Governorate</th>
+                        <th class="py-3">Status</th>
                         <th class="py-3">Registered By</th>
                         <th class="py-3">Registered Date</th>
                         <th class="text-end pe-4 py-3">Actions</th>
@@ -136,6 +146,20 @@
                         </td>
 
                         <td>
+                            <form action="{{ route('patients.toggle-completed', $patient->id) }}" method="POST" class="d-inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="btn btn-sm {{ $patient->is_completed ? 'btn-success' : 'btn-outline-secondary' }} px-2 py-1" title="Toggle Status">
+                                    @if($patient->is_completed)
+                                        <i class="bi bi-check-circle-fill me-1"></i>Completed
+                                    @else
+                                        <i class="bi bi-circle me-1"></i>Pending
+                                    @endif
+                                </button>
+                            </form>
+                        </td>
+
+                        <td>
                             <span class="text-secondary fs-7">
                                 <i class="bi bi-person-badge me-1"></i>{{ $patient->user->name ?? 'System' }}
                             </span>
@@ -148,10 +172,6 @@
                         </td>
 
                         <td class="text-end pe-4">
-                            <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-success me-1 shadow-sm">
-                                <i class="bi bi-file-earmark-medical-fill me-1"></i> Add Visit
-                            </a>
-
                             <div class="btn-group" role="group">
                                 <a href="{{ route('patients.show', $patient->id) }}" class="btn btn-sm btn-outline-secondary" title="View Profile">
                                     <i class="bi bi-eye"></i>
@@ -175,7 +195,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="7" class="text-center py-5 text-muted">
+                        <td colspan="8" class="text-center py-5 text-muted">
                             <i class="bi bi-folder-x fs-1 text-secondary d-block mb-2"></i>
                             <span class="fw-semibold">No patients recorded yet.</span>
                         </td>

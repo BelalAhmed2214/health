@@ -17,16 +17,23 @@ class Patient extends Model
         'children_count',
         'governorate',
         'address',
+        'problem',
+        'solution',
+        'notes',
+        'visit_date',
+        'is_completed',
         'user_id',
-        ''
     ];
+
+    protected $casts = [
+        'is_completed' => 'boolean',
+        'visit_date'   => 'datetime',
+        'notes'        => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-    public function visits()
-    {
-        return $this->hasMany(Visit::class);
     }
     public static function egyptianGovernorates()
     {

@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('national_id', 14)->unique();
 
-            $table->string('mobile',11)->unique()->nullable();
+            $table->string('mobile', 11)->unique()->nullable();
 
             $table->date('date_of_birth')->nullable();
 
@@ -29,8 +29,13 @@ return new class extends Migration
             $table->string('governorate')->nullable();
 
             $table->text('address')->nullable();
+            $table->text('problem')->nullable();
+            $table->text('solution')->nullable();
+            $table->text('notes')->nullable();
+            $table->timestamp('visit_date')->nullable();
+            $table->boolean('is_completed')->default(false);
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            
+
             $table->timestamps();
         });
     }

@@ -11,9 +11,6 @@
         <h2 class="text-secondary fw-bold mb-0 mt-2">Patient Profile</h2>
     </div>
     <div class="col-md-6 text-end mt-2 mt-md-0">
-        <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn btn-success me-2">
-            <i class="bi bi-file-earmark-medical-fill me-1"></i> Log New Visit
-        </a>
         <a href="{{ route('patients.edit', $patient->id) }}" class="btn btn-outline-primary">
             <i class="bi bi-pencil-square me-1"></i> Edit Details
         </a>
@@ -91,58 +88,60 @@
 
     <div class="col-lg-8">
         <h4 class="fw-bold text-dark mb-3">
-            <i class="bi bi-clock-history me-2 text-primary"></i>Medical History Timeline
+            <i class="bi bi-clipboard2-pulse me-2 text-primary"></i>Consultation Record
         </h4>
 
-        @if($patient->visits->isEmpty())
-        <div class="card shadow-sm border-0 text-center py-5 bg-white">
-            <div class="card-body">
-                <i class="bi bi-folder-plus text-muted fs-1 mb-3 d-block"></i>
-                <h5 class="text-secondary fw-semibold">No visits recorded yet</h5>
-                <p class="text-muted small mb-4">This patient doesn't have any consultation logs linked to this profile.</p>
-                <a href="{{ route('visits.create', ['patient_id' => $patient->id]) }}" class="btn btn-sm btn-primary">
-                    <i class="bi bi-plus-lg"></i> Record Initial Consultation
-                </a>
-            </div>
-        </div>
-        @else
-        <div class="vstack gap-3">
-            @foreach($patient->visits->sortByDesc('visit_date') as $visit)
-            <div class="card shadow-sm border-0 border-start border-success border-4 bg-white">
-                <div class="card-header bg-white border-0 pt-3 pb-0 d-flex justify-content-between align-items-center">
-                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 fw-bold">
-                        <i class="bi bi-calendar-event me-1"></i>
-                        {{ $visit->visit_date ? \Carbon\Carbon::parse($visit->visit_date)->format('M d, Y - h:i A') : 'Date Unspecified' }}
-                    </span>
-                    <small class="text-muted">
-                        <i class="bi bi-doctor me-1"></i>{{ $visit->user->name ?? 'Unknown' }}
-                    </small>
-                </div>
-
-                <div class="card-body py-3">
-                    <div class="mb-3">
-                        <span class="d-block text-danger fw-bold fs-7 mb-1"><i class="bi bi-exclamation-circle me-1"></i>Presented Problem / Symptoms</span>
-                        <p class="text-dark bg-light p-2 rounded mb-0 border-start border-danger border-2">{{ $visit->problem }}</p>
-                    </div>
-
-                    <div class="mb-3">
-                        <span class="d-block text-success fw-bold fs-7 mb-1"><i class="bi bi-prescription me-1"></i>Diagnosis & Treatment Plan</span>
-                        <p class="text-dark bg-light p-2 rounded mb-0 border-start border-success border-2">{{ $visit->solution }}</p>
-                    </div>
-
-                    @if($visit->notes)
-                    <div class="mb-0">
-                        <span class="d-block text-secondary fw-bold fs-7 mb-1"><i class="bi bi-sticky me-1"></i>Internal Clinic Notes</span>
-                        <p class="text-muted small italic-style bg-light p-2 rounded mb-0 border-start border-secondary border-2">
-                            <em>{{ $visit->notes }}</em>
-                        </p>
-                    </div>
+        <div class="card shadow-sm border-0 bg-white">
+            <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center py-3">
+                <h6 class="mb-0 fw-semibold text-dark">
+                    <i class="bi bi-calendar-event me-2 text-success"></i>
+                    {{ $patient->visit_date ? \Carbon\Carbon::parse($patient->visit_date)->format('M d, Y - h:i A') : 'Date Unspecified' }}
+                </h6>
+                <span class="badge {{ $patient->is_completed ? 'bg-success' : 'bg-secondary' }} px-3 py-2">
+                    @if($patient->is_completed)
+                        <i class="bi bi-check-circle-fill me-1"></i>Completed
+                    @else
+                        <i class="bi bi-hourglass-split me-1"></i>Pending
                     @endif
-                </div>
+                </span>
             </div>
-            @endforeach
+
+            <div class="card-body p-4 vstack gap-4">
+                <div>
+                    <h6 class="text-danger fw-bold fs-7 mb-2">
+                        <i class="bi bi-exclamation-circle-fill me-1"></i>Presented Symptoms / Problem
+                    </h6>
+                    <div class="bg-light p-3 rounded border-start border-danger border-3 text-secondary" style="white-space: pre-line; min-height: 60px;">
+                        {{ $patient->problem ?? '—' }}
+                    </div>
+                </div>
+
+                <div>
+                    <h6 class="text-success fw-bold fs-7 mb-2">
+                        <i class="bi bi-prescription2 me-1"></i>Diagnosis &amp; Treatment Plan
+                    </h6>
+                    <div class="bg-light p-3 rounded border-start border-success border-3 text-secondary" style="white-space: pre-line; min-height: 60px;">
+                        {{ $patient->solution ?? '—' }}
+                    </div>
+                </div>
+
+                @php $notesList = array_filter($patient->notes ?? []); @endphp
+                @if(count($notesList) > 0)
+                <div>
+                    <h6 class="text-secondary fw-bold fs-7 mb-2">
+                        <i class="bi bi-sticky me-1"></i>Internal Clinic Notes
+                    </h6>
+                    <div class="vstack gap-2">
+                        @foreach($notesList as $note)
+                        <div class="bg-light p-3 rounded border-start border-secondary border-3 text-secondary" style="white-space: pre-line;">
+                            <em>{{ $note }}</em>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
+            </div>
         </div>
-        @endif
     </div>
 </div>
 @endsection

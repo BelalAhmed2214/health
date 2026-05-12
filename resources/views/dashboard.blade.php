@@ -36,18 +36,18 @@
         </div>
     </div>
 
-    {{-- Visits --}}
+    {{-- Completed --}}
     <div class="col-md-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center gap-4 p-4">
                 <div class="bg-success bg-opacity-10 rounded-3 p-3">
-                    <i class="bi bi-file-earmark-medical-fill fs-1 text-success"></i>
+                    <i class="bi bi-check-circle-fill fs-1 text-success"></i>
                 </div>
                 <div>
-                    <div class="fs-1 fw-bold text-dark">{{ $totalVisits }}</div>
-                    <div class="text-muted">Total Visits</div>
-                    <a href="{{ route('visits.index') }}" class="text-success small">
-                        Manage <i class="bi bi-arrow-right"></i>
+                    <div class="fs-1 fw-bold text-dark">{{ $completedCount }}</div>
+                    <div class="text-muted">Completed</div>
+                    <a href="{{ route('patients.index', ['is_completed' => 1]) }}" class="text-success small">
+                        View <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -74,11 +74,11 @@
 
 </div>
 
-{{-- Recent Visits --}}
+{{-- Recent Patients --}}
 <div class="card border-0 shadow-sm">
     <div class="card-header bg-white border-bottom py-3 d-flex align-items-center justify-content-between">
-        <h5 class="mb-0 fw-semibold"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Visits</h5>
-        <a href="{{ route('visits.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
+        <h5 class="mb-0 fw-semibold"><i class="bi bi-clock-history me-2 text-primary"></i>Recent Patients</h5>
+        <a href="{{ route('patients.index') }}" class="btn btn-sm btn-outline-primary">View All</a>
     </div>
     <div class="card-body p-0">
         <div class="table-responsive">
@@ -87,23 +87,35 @@
                     <tr>
                         <th class="ps-4 py-3">Patient</th>
                         <th class="py-3">Problem</th>
+                        <th class="py-3">Status</th>
                         <th class="py-3">Visit Date</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse($recentVisits as $visit)
+                    @forelse($recentPatients as $patient)
                     <tr>
                         <td class="ps-4">
-                            <a href="{{ route('patients.show', $visit->patient_id) }}" class="fw-semibold text-dark text-decoration-none">
-                                {{ $visit->patient->name ?? '—' }}
+                            <a href="{{ route('patients.show', $patient->id) }}" class="fw-semibold text-dark text-decoration-none">
+                                {{ $patient->name }}
                             </a>
                         </td>
-                        <td class="text-muted">{{ Str::limit($visit->problem, 60) }}</td>
-                        <td><span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($visit->visit_date)->format('d M Y') }}</span></td>
+                        <td class="text-muted">{{ Str::limit($patient->problem, 60) ?: '—' }}</td>
+                        <td>
+                            <span class="badge {{ $patient->is_completed ? 'bg-success' : 'bg-secondary' }}">
+                                {{ $patient->is_completed ? 'Completed' : 'Pending' }}
+                            </span>
+                        </td>
+                        <td>
+                            @if($patient->visit_date)
+                                <span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($patient->visit_date)->format('d M Y') }}</span>
+                            @else
+                                <span class="text-muted small">—</span>
+                            @endif
+                        </td>
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="3" class="text-center py-4 text-muted">No visits recorded yet.</td>
+                        <td colspan="4" class="text-center py-4 text-muted">No patients recorded yet.</td>
                     </tr>
                     @endforelse
                 </tbody>

@@ -54,11 +54,6 @@
                             <i class="bi bi-people me-1"></i>Patients
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('visits.*') ? 'active fw-semibold' : '' }}" href="{{ route('visits.index') }}">
-                            <i class="bi bi-file-earmark-medical me-1"></i>Visits
-                        </a>
-                    </li>
                     @auth
                     <li class="nav-item ms-3 dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
@@ -92,6 +87,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/packages/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @stack('scripts')
 </body>
 
 </html>

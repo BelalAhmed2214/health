@@ -156,6 +156,74 @@
                         </div>
                     </div>
 
+                    <div class="mb-4">
+                        <h6 class="text-primary border-bottom pb-2 fw-bold">
+                            <i class="bi bi-clipboard2-pulse me-2"></i>4. Consultation / Visit Data
+                        </h6>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="problem" class="form-label fw-semibold text-danger">
+                                    <i class="bi bi-exclamation-triangle-fill me-1"></i>Presented Symptoms / Problem
+                                </label>
+                                <textarea name="problem" id="problem" rows="3"
+                                    class="form-control @error('problem') is-invalid @enderror"
+                                    placeholder="Describe the clinical symptoms or complaints...">{{ old('problem', $patient->problem) }}</textarea>
+                                @error('problem')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12">
+                                <label for="solution" class="form-label fw-semibold text-success">
+                                    <i class="bi bi-prescription me-1"></i>Diagnosis &amp; Treatment Plan
+                                </label>
+                                <textarea name="solution" id="solution" rows="3"
+                                    class="form-control @error('solution') is-invalid @enderror"
+                                    placeholder="Medical prescriptions, lab workups, treatment plan...">{{ old('solution', $patient->solution) }}</textarea>
+                                @error('solution')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-5">
+                                <label for="visit_date" class="form-label fw-semibold">
+                                    <i class="bi bi-calendar-check-fill text-primary me-1"></i>Visit Date &amp; Time
+                                </label>
+                                <input type="datetime-local" name="visit_date" id="visit_date"
+                                    class="form-control @error('visit_date') is-invalid @enderror"
+                                    value="{{ old('visit_date', $patient->visit_date ? \Carbon\Carbon::parse($patient->visit_date)->format('Y-m-d\TH:i') : '') }}">
+                                @error('visit_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label fw-semibold text-secondary">
+                                    <i class="bi bi-sticky-fill me-1"></i>Internal Clinic Notes
+                                </label>
+                                @php $notesOld = old('notes', $patient->notes ?? ['']); if (empty($notesOld)) $notesOld = ['']; @endphp
+                                <div id="notes-container" class="vstack gap-2 mb-2">
+                                    @foreach($notesOld as $i => $noteVal)
+                                    <div class="notes-item d-flex gap-2">
+                                        <textarea name="notes[]" rows="2"
+                                            class="form-control @error('notes.'.$i) is-invalid @enderror"
+                                            placeholder="Add a note...">{{ $noteVal }}</textarea>
+                                        <button type="button"
+                                            class="btn btn-outline-danger btn-sm align-self-start notes-remove"
+                                            {{ count($notesOld) <= 1 ? 'style="display:none"' : '' }}>
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <button type="button" class="btn btn-outline-secondary btn-sm" id="add-note-btn">
+                                    <i class="bi bi-plus-circle me-1"></i> Add Note
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-end gap-2">
@@ -172,3 +240,38 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const container = document.getElementById('notes-container');
+
+    document.getElementById('add-note-btn').addEventListener('click', function () {
+        const item = document.createElement('div');
+        item.className = 'notes-item d-flex gap-2';
+        item.innerHTML = `
+            <textarea name="notes[]" rows="2" class="form-control" placeholder="Add a note..."></textarea>
+            <button type="button" class="btn btn-outline-danger btn-sm align-self-start notes-remove">
+                <i class="bi bi-trash"></i>
+            </button>`;
+        container.appendChild(item);
+        syncRemoveButtons();
+    });
+
+    container.addEventListener('click', function (e) {
+        const btn = e.target.closest('.notes-remove');
+        if (btn) {
+            btn.closest('.notes-item').remove();
+            syncRemoveButtons();
+        }
+    });
+
+    function syncRemoveButtons() {
+        const items = container.querySelectorAll('.notes-item');
+        items.forEach(function (item) {
+            item.querySelector('.notes-remove').style.display = items.length > 1 ? '' : 'none';
+        });
+    }
+});
+</script>
+@endpush

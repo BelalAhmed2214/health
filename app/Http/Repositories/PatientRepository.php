@@ -44,12 +44,16 @@ class PatientRepository
             fn($q, $date) => $q->whereDate('created_at', '<=', $date)
         );
 
+        if (isset($filters['is_completed']) && $filters['is_completed'] !== '') {
+            $query->where('is_completed', (bool) $filters['is_completed']);
+        }
+
         return $query;
     }
     public function getPatient(int $patient_id)
     {
         $patient = Patient::findOrFail($patient_id);
-        $patient->load('user', 'visits');
+        $patient->load('user');
         return $patient;
     }
     public function createPatient(array $data)

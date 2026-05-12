@@ -8,13 +8,17 @@ class StorePatientDTO{
     public function __construct(
         public string $name,
         public string $national_id,
-        public string $mobile,
-        public string $date_of_birth,
-        public string $marital_status,
-        public int $children_count,
-        public string $governorate,
-        public string $address,
-        public int $user_id,        
+        public ?string $mobile,
+        public ?string $date_of_birth,
+        public ?string $marital_status,
+        public ?int $children_count,
+        public ?string $governorate,
+        public ?string $address,
+        public ?string $problem,
+        public ?string $solution,
+        public ?array $notes,
+        public ?string $visit_date,
+        public int $user_id,
     ){}
     public static function fromRequest(Request $request): self
     {
@@ -27,22 +31,29 @@ class StorePatientDTO{
             children_count: $request->children_count,
             governorate: $request->governorate,
             address: $request->address,
-            user_id : Auth::id(),
+            problem: $request->problem,
+            solution: $request->solution,
+            notes: $request->notes,
+            visit_date: $request->visit_date,
+            user_id: Auth::id(),
         );
     }
     public function toArray(): array
     {
         return [
-            'name' => $this->name,
-            'national_id' => $this->national_id,
-            'mobile' => $this->mobile,
-            'date_of_birth' => $this->date_of_birth,
+            'name'           => $this->name,
+            'national_id'    => $this->national_id,
+            'mobile'         => $this->mobile,
+            'date_of_birth'  => $this->date_of_birth,
             'marital_status' => $this->marital_status,
             'children_count' => $this->children_count,
-            'governorate' => $this->governorate,
-            'address' => $this->address,
-            'user_id' => Auth::id(),
-
+            'governorate'    => $this->governorate,
+            'address'        => $this->address,
+            'problem'        => $this->problem,
+            'solution'       => $this->solution,
+            'notes'          => $this->notes,
+            'visit_date'     => $this->visit_date,
+            'user_id'        => Auth::id(),
         ];
     }
 }
