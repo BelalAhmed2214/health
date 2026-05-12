@@ -115,7 +115,7 @@
                         <th class="py-3">Mobile No.</th>
                         <th class="py-3">Governorate</th>
                         <th class="py-3">Status</th>
-                        <th class="py-3">Registered By</th>
+                        <th class="py-3">Follower</th>
                         <th class="py-3">Registered Date</th>
                         <th class="text-end pe-4 py-3">Actions</th>
                     </tr>
@@ -161,7 +161,7 @@
 
                         <td>
                             <span class="text-secondary fs-7">
-                                <i class="bi bi-person-badge me-1"></i>{{ $patient->user->name ?? 'System' }}
+                                <i class="bi bi-person-badge me-1"></i>{{ \App\Models\Patient::followers()[$patient->follower] ?? '—' }}
                             </span>
                         </td>
 

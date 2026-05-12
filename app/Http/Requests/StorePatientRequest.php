@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StorePatientRequest extends FormRequest
 {
@@ -22,6 +23,7 @@ class StorePatientRequest extends FormRequest
      */
      public function rules(): array
     {
+        $followers = array_keys(\App\Models\Patient::followers());
         return [
             'name'           => ['required', 'string', 'max:255'],
             'national_id'    => ['required', 'string', 'unique:patients,national_id', 'min:14', 'max:14'],
@@ -36,6 +38,8 @@ class StorePatientRequest extends FormRequest
             'notes'          => ['nullable', 'array'],
             'notes.*'        => ['nullable', 'string'],
             'visit_date'     => ['nullable', 'date'],
+            'price'          => ['nullable', 'numeric', 'min:0'],
+            'follower'       => ['nullable', 'string', Rule::in($followers)],
         ];
     }
 }

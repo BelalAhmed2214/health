@@ -24,6 +24,8 @@ class UpdatePatientRequest extends FormRequest
     public function rules(): array
     {
         $patientId = $this->route('patient');
+        $followers = array_keys(\App\Models\Patient::followers());
+
         return [
             'name'           => ['nullable', 'string', 'max:255'],
             'national_id'    => ['nullable', 'string', Rule::unique('patients', 'national_id')->ignore($patientId)],
@@ -39,6 +41,8 @@ class UpdatePatientRequest extends FormRequest
             'notes.*'        => ['nullable', 'string'],
             'visit_date'     => ['nullable', 'date'],
             'is_completed'   => ['nullable', 'boolean'],
+            'price'          => ['nullable', 'numeric', 'min:0'],
+            'follower'       => ['nullable', 'string', Rule::in($followers)],
         ];
     }
 }

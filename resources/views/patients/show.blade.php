@@ -82,6 +82,29 @@
                 <div class="bg-light p-2 rounded text-center">
                     <small class="text-muted fs-8">Registered by: <strong>{{ $patient->user->name ?? 'System' }}</strong></small>
                 </div>
+
+                @if($patient->follower || $patient->price)
+                <div class="vstack gap-2 mt-2">
+                    @if($patient->follower)
+                    <div>
+                        <small class="text-muted d-block uppercase fw-semibold tracking-wider">Follower / المتابع</small>
+                        <span class="fw-semibold text-dark" dir="rtl">
+                            <i class="bi bi-person-check-fill text-info me-1"></i>
+                            {{ \App\Models\Patient::followers()[$patient->follower] ?? $patient->follower }}
+                        </span>
+                    </div>
+                    @endif
+                    @if($patient->price)
+                    <div>
+                        <small class="text-muted d-block uppercase fw-semibold tracking-wider">Price</small>
+                        <span class="fw-semibold text-dark">
+                            <i class="bi bi-cash-stack text-success me-1"></i>
+                            {{ number_format($patient->price, 2) }} EGP
+                        </span>
+                    </div>
+                    @endif
+                </div>
+                @endif
             </div>
         </div>
     </div>

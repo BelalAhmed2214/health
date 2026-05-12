@@ -11,9 +11,10 @@ class DashboardController extends Controller
     {
         $totalPatients    = Patient::count();
         $completedCount   = Patient::where('is_completed', true)->count();
-        $totalUsers       = User::count();
-        $recentPatients   = Patient::with('user')->latest()->take(5)->get();
+        $pendingCount   = Patient::where('is_completed', false)->count();
 
-        return view('dashboard', compact('totalPatients', 'completedCount', 'totalUsers', 'recentPatients'));
+        $totalPrice       = Patient::sum('price');
+        $recentPatients   = Patient::with('user')->latest()->take(5)->get();
+        return view('dashboard', compact('totalPatients', 'completedCount', 'pendingCount', 'totalPrice', 'recentPatients'));
     }
 }

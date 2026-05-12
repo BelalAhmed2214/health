@@ -18,6 +18,8 @@ class StorePatientDTO{
         public ?string $solution,
         public ?array $notes,
         public ?string $visit_date,
+        public ?float $price,
+        public ?string $follower,
         public int $user_id,
     ){}
     public static function fromRequest(Request $request): self
@@ -35,6 +37,8 @@ class StorePatientDTO{
             solution: $request->solution,
             notes: $request->notes,
             visit_date: $request->visit_date,
+            price: $request->price,
+            follower: $request->follower,
             user_id: Auth::id(),
         );
     }
@@ -53,6 +57,8 @@ class StorePatientDTO{
             'solution'       => $this->solution,
             'notes'          => $this->notes,
             'visit_date'     => $this->visit_date,
+            'price'          => $this->price,
+            'follower'       => $this->follower,
             'user_id'        => Auth::id(),
         ];
     }

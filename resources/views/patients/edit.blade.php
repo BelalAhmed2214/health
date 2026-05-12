@@ -198,6 +198,42 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-4">
+                                <label for="price" class="form-label fw-semibold">
+                                    <i class="bi bi-currency-dollar text-success me-1"></i>Price (EGP)
+                                </label>
+                                <input type="number"
+                                    name="price"
+                                    id="price"
+                                    min="0"
+                                    step="0.01"
+                                    class="form-control @error('price') is-invalid @enderror"
+                                    value="{{ old('price', $patient->price) }}"
+                                    placeholder="0.00">
+                                @error('price')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3">
+                                <label for="follower" class="form-label fw-semibold">
+                                    <i class="bi bi-person-check-fill text-info me-1"></i>Follower / المتابع
+                                </label>
+                                <select name="follower" id="follower"
+                                    class="form-select @error('follower') is-invalid @enderror"
+                                    dir="rtl">
+                                    <option value="">-- اختر المتابع --</option>
+                                    @foreach(\App\Models\Patient::followers() as $key => $arabic)
+                                    <option value="{{ $key }}" {{ old('follower', $patient->follower) == $key ? 'selected' : '' }}>
+                                        {{ $arabic }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('follower')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="col-12">
                                 <label class="form-label fw-semibold text-secondary">
                                     <i class="bi bi-sticky-fill me-1"></i>Internal Clinic Notes

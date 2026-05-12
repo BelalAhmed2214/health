@@ -34,6 +34,8 @@ return new class extends Migration
             $table->text('notes')->nullable();
             $table->timestamp('visit_date')->nullable();
             $table->boolean('is_completed')->default(false);
+            $table->decimal('price', 10, 2)->nullable();
+            $table->string('follower')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
             $table->timestamps();

@@ -53,20 +53,35 @@
             </div>
         </div>
     </div>
-
-    {{-- Users --}}
     <div class="col-md-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center gap-4 p-4">
-                <div class="bg-warning bg-opacity-10 rounded-3 p-3">
-                    <i class="bi bi-person-badge-fill fs-1 text-warning"></i>
+                <div class="bg-danger bg-opacity-10 rounded-3 p-3">
+                    <i class="bi bi-exclamation-circle-fill fs-1 text-danger"></i>
                 </div>
                 <div>
-                    <div class="fs-1 fw-bold text-dark">{{ $totalUsers }}</div>
-                    <div class="text-muted">Total Users</div>
-                    <a href="{{ route('users.index') }}" class="text-warning small">
-                        Manage <i class="bi bi-arrow-right"></i>
+                    <div class="fs-1 fw-bold text-danger">{{ $pendingCount }}</div>
+                    <div class="text-muted">Pending</div>
+                    <a href="{{ route('patients.index', ['is_completed' => 0]) }}" class="text-danger small">
+                        View <i class="bi bi-arrow-right"></i>
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {{-- Total Price --}}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body d-flex align-items-center gap-4 p-4">
+                <div class="bg-success bg-opacity-10 rounded-3 p-3">
+                    <i class="bi bi-cash-stack fs-1 text-success"></i>
+                </div>
+                <div>
+                    <div class="fs-1 fw-bold text-dark">{{ number_format($totalPrice, 2) }}</div>
+                    <div class="text-muted">Total Revenue (EGP)</div>
                 </div>
             </div>
         </div>
@@ -107,9 +122,9 @@
                         </td>
                         <td>
                             @if($patient->visit_date)
-                                <span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($patient->visit_date)->format('d M Y') }}</span>
+                            <span class="badge bg-light text-dark border">{{ \Carbon\Carbon::parse($patient->visit_date)->format('d M Y') }}</span>
                             @else
-                                <span class="text-muted small">—</span>
+                            <span class="text-muted small">—</span>
                             @endif
                         </td>
                     </tr>

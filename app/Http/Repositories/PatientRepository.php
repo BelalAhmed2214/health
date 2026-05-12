@@ -8,7 +8,7 @@ class PatientRepository
 {
     public function getAllPatients()
     {
-        $patients = Patient::paginate(5);
+        $patients = Patient::orderBy('visit_date', 'desc')->paginate(10);
         return $patients;
     }
     public function query()
@@ -47,6 +47,8 @@ class PatientRepository
         if (isset($filters['is_completed']) && $filters['is_completed'] !== '') {
             $query->where('is_completed', (bool) $filters['is_completed']);
         }
+
+        $query->orderBy('visit_date', 'desc');
 
         return $query;
     }

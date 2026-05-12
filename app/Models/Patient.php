@@ -22,8 +22,28 @@ class Patient extends Model
         'notes',
         'visit_date',
         'is_completed',
+        'price',
+        'follower',
         'user_id',
     ];
+
+    public static function followers(): array
+    {
+        return [
+            'hassan_hamam'        => 'حسن حمام',
+            'abdel_rahman_ahmed'  => 'عبد الرحمن أحمد',
+            'ahmed_saad'          => 'احمد سعد',
+            'mohamed_ali'         => 'محمد علي',
+            'mohamed_ahmed'       => 'محمد أحمد',
+            'hazem'               => 'حازم',
+            'mohamed_rabie'       => 'محمد ربيع',
+        ];
+    }
+
+    public static function followerLabel(?string $key): ?string
+    {
+        return static::followers()[$key] ?? $key;
+    }
 
     protected $casts = [
         'is_completed' => 'boolean',
