@@ -32,13 +32,16 @@
 
 
 @php
-    $filterField = request('filter_by', 'name');
-    $filterValue = request('search', '');
-    $dateFrom    = request('date_from', '');
-    $dateTo      = request('date_to', '');
-    $isCompleted = request('is_completed', '');
-    $hasFilters  = $filterValue || $dateFrom || $dateTo || $isCompleted !== '';
-    $placeholders = ['name' => 'Search by patient name...', 'national_id' => 'Search by national ID...', 'mobile' => 'Search by mobile number...'];
+    $filterField   = request('filter_by', 'name');
+    $filterValue   = request('search', '');
+    $dateFrom      = request('date_from', '');
+    $dateTo        = request('date_to', '');
+    $isCompleted   = request('is_completed', '');
+    $follower      = request('follower', '');
+    $section       = request('section', '');
+    $sourceOfMoney = request('source_of_money', '');
+    $hasFilters    = $filterValue || $dateFrom || $dateTo || $isCompleted !== '' || $follower || $section || $sourceOfMoney;
+    $placeholders  = ['name' => 'Search by patient name...', 'national_id' => 'Search by national ID...', 'mobile' => 'Search by mobile number...'];
 @endphp
 
 <form method="GET" action="{{ route('patients.index') }}" class="mb-4">
@@ -90,6 +93,37 @@
             </a>
             @endif
         </div>
+
+        {{-- Row 2: Enum filters --}}
+        <div class="col-md-4">
+            <label class="form-label text-muted small mb-1">Follower / المتابع</label>
+            <select name="follower" class="form-select form-select-sm shadow-sm" dir="rtl">
+                <option value="">-- All Followers --</option>
+                @foreach(\App\Models\Patient::followers() as $key => $label)
+                <option value="{{ $key }}" {{ $follower === $key ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label text-muted small mb-1">Section / القسم</label>
+            <select name="section" class="form-select form-select-sm shadow-sm" dir="rtl">
+                <option value="">-- All Sections --</option>
+                @foreach(\App\Enums\SectionEnum::cases() as $case)
+                <option value="{{ $case->value }}" {{ $section === $case->value ? 'selected' : '' }}>{{ $case->label() }}</option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label text-muted small mb-1">Source of Money / مصدر التمويل</label>
+            <select name="source_of_money" class="form-select form-select-sm shadow-sm" dir="rtl">
+                <option value="">-- All Sources --</option>
+                @foreach(\App\Enums\SourceOfMoneyEnum::cases() as $case)
+                <option value="{{ $case->value }}" {{ $sourceOfMoney === $case->value ? 'selected' : '' }}>{{ $case->label() }}</option>
+                @endforeach
+            </select>
+        </div>
     </div>
 </form>
 
@@ -116,6 +150,8 @@
                         <th class="py-3">Governorate</th>
                         <th class="py-3">Status</th>
                         <th class="py-3">Follower</th>
+                        <th class="py-3">Source</th>
+                        <th class="py-3">Section</th>
                         <th class="py-3">Registered Date</th>
                         <th class="text-end pe-4 py-3">Actions</th>
                     </tr>
@@ -166,6 +202,18 @@
                         </td>
 
                         <td>
+                            <span class="text-secondary fs-7">
+                                <i class="bi bi-cash-coin me-1"></i>{{ $patient->source_of_money?->label() ?? '—' }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="text-secondary fs-7">
+                                <i class="bi bi-building me-1"></i>{{ $patient->section?->label() ?? '—' }}
+                            </span>
+                        </td>
+
+                        <td>
                             <span class="text-muted small">
                                 <i class="bi bi-calendar3 me-1"></i>{{ $patient->created_at->format('d M Y') }}
                             </span>
@@ -195,7 +243,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="text-center py-5 text-muted">
+                        <td colspan="10" class="text-center py-5 text-muted">
                             <i class="bi bi-folder-x fs-1 text-secondary d-block mb-2"></i>
                             <span class="fw-semibold">No patients recorded yet.</span>
                         </td>

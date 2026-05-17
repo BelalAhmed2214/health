@@ -235,6 +235,44 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-6">
+                                <label for="section" class="form-label fw-semibold">
+                                    <i class="bi bi-building me-1"></i>Section
+                                </label>
+                                <select name="section" id="section"
+                                    class="form-select @error('section') is-invalid @enderror"
+                                    dir="rtl">
+                                    <option value="">-- اختر المنطقة --</option>
+                                    @foreach(\App\Enums\SectionEnum::cases() as $case)
+                                    <option value="{{ $case->value }}" {{ old('section') == $case->value ? 'selected' : '' }}>
+                                        {{ $case->label() }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('section')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="source_of_money" class="form-label fw-semibold">
+                                    <i class="bi bi-cash-coin me-1"></i>Source of Money
+                                </label>
+                                <select name="source_of_money" id="source_of_money"
+                                    class="form-select @error('source_of_money') is-invalid @enderror"
+                                    dir="rtl">
+                                    <option value="">-- اختر المصدر --</option>
+                                    @foreach(\App\Enums\SourceOfMoneyEnum::cases() as $case)
+                                    <option value="{{ $case->value }}" {{ old('source_of_money') == $case->value ? 'selected' : '' }}>
+                                        {{ $case->label() }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('source_of_money')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="col-12">
                                 <label class="form-label fw-semibold text-secondary">
                                     <i class="bi bi-sticky-fill me-1"></i>Internal Clinic Notes

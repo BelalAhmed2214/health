@@ -17,19 +17,25 @@ class PatientController extends Controller
 
     public function index(Request $request)
     {
-        $search      = $request->input('search');
-        $filterBy    = $request->input('filter_by', 'name');
-        $dateFrom    = $request->input('date_from');
-        $dateTo      = $request->input('date_to');
-        $isCompleted = $request->input('is_completed', '');
+        $search        = $request->input('search');
+        $filterBy      = $request->input('filter_by', 'name');
+        $dateFrom      = $request->input('date_from');
+        $dateTo        = $request->input('date_to');
+        $isCompleted   = $request->input('is_completed', '');
+        $follower      = $request->input('follower');
+        $section       = $request->input('section');
+        $sourceOfMoney = $request->input('source_of_money');
 
         $filters = [];
-        if ($search)                     $filters[$filterBy]    = $search;
-        if ($dateFrom)                   $filters['date_from']  = $dateFrom;
-        if ($dateTo)                     $filters['date_to']    = $dateTo;
-        if ($isCompleted !== '')         $filters['is_completed'] = $isCompleted;
+        if ($search)           $filters[$filterBy]        = $search;
+        if ($dateFrom)         $filters['date_from']       = $dateFrom;
+        if ($dateTo)           $filters['date_to']         = $dateTo;
+        if ($isCompleted !== '') $filters['is_completed']  = $isCompleted;
+        if ($follower)         $filters['follower']        = $follower;
+        if ($section)          $filters['section']         = $section;
+        if ($sourceOfMoney)    $filters['source_of_money'] = $sourceOfMoney;
 
-        $patients = ($filters || $isCompleted !== '')
+        $patients = $filters
             ? $this->patientService->filterPatients($filters)
             : $this->patientService->getPatientData();
 

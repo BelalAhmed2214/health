@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\SectionEnum;
+use App\Enums\SourceOfMoneyEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -24,6 +26,8 @@ class Patient extends Model
         'is_completed',
         'price',
         'follower',
+        'section',
+        'source_of_money',
         'user_id',
     ];
 
@@ -46,9 +50,11 @@ class Patient extends Model
     }
 
     protected $casts = [
-        'is_completed' => 'boolean',
-        'visit_date'   => 'datetime',
-        'notes'        => 'array',
+        'is_completed'    => 'boolean',
+        'visit_date'      => 'datetime',
+        'notes'           => 'array',
+        'section'         => SectionEnum::class,
+        'source_of_money' => SourceOfMoneyEnum::class,
     ];
 
     public function user()
