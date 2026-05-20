@@ -55,7 +55,7 @@
                         </div>
                         <div class="col-6">
                             <small class="text-muted d-block uppercase fw-semibold tracking-wider">{{ __('Marital Status') }}</small>
-                            <span class="fw-semibold text-dark text-capitalize">{{ $patient->marital_status ?? 'N/A' }}</span>
+                            <span class="fw-semibold text-dark">{{ $patient->marital_status ? __(ucfirst($patient->marital_status)) : 'N/A' }}</span>
                         </div>
                     </div>
 
