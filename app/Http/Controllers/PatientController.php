@@ -58,18 +58,22 @@ class PatientController extends Controller
     public function show(int $patient_id)
     {
         $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('view', $patient);
         return view('patients.show', compact('patient'));
     }
 
     public function edit(int $patient_id)
     {
         $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('update', $patient);
         $governorates = $this->patientService->getEgyptianGovernorates();
         return view('patients.edit', compact('patient', 'governorates'));
     }
 
     public function update(UpdatePatientRequest $request, int $patient_id)
     {
+        $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('update', $patient);
         $dto = UpdatePatientDTO::fromRequest($request);
         $this->patientService->updatePatient($patient_id, $dto->toArray());
         return redirect()->route('patients.index')->with(['success' => 'Patient Updated Successfully']);
@@ -77,6 +81,8 @@ class PatientController extends Controller
 
     public function destroy(int $patient_id)
     {
+        $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('delete', $patient);
         $this->patientService->deletePatient($patient_id);
         return redirect()->route('patients.index')->with(['success' => 'Patient Deleted Successfully']);
     }

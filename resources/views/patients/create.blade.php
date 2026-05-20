@@ -239,16 +239,22 @@
                                 <label for="section" class="form-label fw-semibold">
                                     <i class="bi bi-building me-1"></i>Section
                                 </label>
-                                <select name="section" id="section"
-                                    class="form-select @error('section') is-invalid @enderror"
-                                    dir="rtl">
-                                    <option value="">-- اختر المنطقة --</option>
-                                    @foreach(\App\Enums\SectionEnum::cases() as $case)
-                                    <option value="{{ $case->value }}" {{ old('section') == $case->value ? 'selected' : '' }}>
-                                        {{ $case->label() }}
-                                    </option>
-                                    @endforeach
-                                </select>
+                                @if(auth()->user()->isSectionUser())
+                                    {{-- Section users cannot change the section --}}
+                                    <input type="hidden" name="section" value="{{ auth()->user()->section->value }}">
+                                    <input type="text" class="form-control bg-light" value="{{ auth()->user()->section->label() }}" dir="rtl" disabled>
+                                @else
+                                    <select name="section" id="section"
+                                        class="form-select @error('section') is-invalid @enderror"
+                                        dir="rtl">
+                                        <option value="">-- اختر المنطقة --</option>
+                                        @foreach(\App\Enums\SectionEnum::cases() as $case)
+                                        <option value="{{ $case->value }}" {{ old('section') == $case->value ? 'selected' : '' }}>
+                                            {{ $case->label() }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                @endif
                                 @error('section')
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

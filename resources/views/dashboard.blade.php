@@ -73,21 +73,9 @@
     </div>
 
     {{-- Total Revenue --}}
-    <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body d-flex align-items-center gap-3 p-4">
-                <div class="bg-success bg-opacity-10 rounded-3 p-3 flex-shrink-0">
-                    <i class="bi bi-cash-stack fs-2 text-success"></i>
-                </div>
-                <div>
-                    <div class="fs-2 fw-bold text-dark">{{ number_format($totalPrice, 2) }}</div>
-                    <div class="text-muted small">Total Revenue (EGP)</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+  
     {{-- Dekhila --}}
+    @if(Auth::user()->isSuperAdmin() || Auth::user()->section?->value === 'dekhila')
     <div class="col-md-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center gap-3 p-4">
@@ -101,8 +89,10 @@
             </div>
         </div>
     </div>
+    @endif
 
     {{-- Agamy --}}
+    @if(Auth::user()->isSuperAdmin() || Auth::user()->section?->value === 'agamy')
     <div class="col-md-3">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center gap-3 p-4">
@@ -116,6 +106,7 @@
             </div>
         </div>
     </div>
+    @endif
 
     {{-- Charity --}}
     <div class="col-md-3">

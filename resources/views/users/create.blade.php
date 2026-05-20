@@ -85,6 +85,20 @@
                         </div>
                     </div>
 
+                    {{-- Section (only relevant when is_admin is off) --}}
+                    <div class="mb-4" id="section-field">
+                        <label for="section" class="form-label fw-semibold">Section</label>
+                        <select id="section" name="section" class="form-select @error('section') is-invalid @enderror">
+                            <option value="">— None (Super Admin) —</option>
+                            <option value="agamy"   {{ old('section') === 'agamy'   ? 'selected' : '' }}>العجمي</option>
+                            <option value="dekhila" {{ old('section') === 'dekhila' ? 'selected' : '' }}>الدخيلة</option>
+                        </select>
+                        <div class="form-text text-muted">Leave empty if this user is a Super Admin.</div>
+                        @error('section')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                     <hr class="text-muted opacity-25">
 
                     <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">

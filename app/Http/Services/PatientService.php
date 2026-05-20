@@ -12,12 +12,26 @@ class PatientService
     }
     public function getPatientData()
     {
-        $patients = $this->patientRepository->getAllPatients();
-        return $patients;
+        $user = auth()->user();
+
+        if ($user->isSectionUser()) {
+            return $this->patientRepository->filter(['section' => $user->section->value])
+                ->paginate(10)
+                ->withQueryString();
+        }
+
+        return $this->patientRepository->getAllPatients();
     }
 
     public function filterPatients(array $filters)
     {
+        $user = auth()->user();
+
+        // Section users are always locked to their own section
+        if ($user->isSectionUser()) {
+            $filters['section'] = $user->section->value;
+        }
+
         return $this->patientRepository->filter($filters)->paginate(5)->withQueryString();
     }
     public function getPatientDetails(int $patient_id)

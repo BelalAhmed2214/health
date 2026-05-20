@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Enums\SectionEnum;
+use App\Enums\SourceOfMoneyEnum;
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -77,7 +80,9 @@ class PatientFactory extends Factory
             'notes'        => $notesSets[$index],
             'visit_date'   => fake()->dateTimeBetween('-6 months', 'now'),
             'is_completed' => fake()->boolean(40),
-
+            'section'      => fake()->randomElement(SectionEnum::cases()),
+            'source_of_money' => fake()->randomElement(SourceOfMoneyEnum::cases()),
+            'follower'=> fake()->randomElement(array_keys(Patient::followers())),
             'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
         ];
     }

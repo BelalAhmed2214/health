@@ -33,16 +33,20 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')],
+            'name'    => ['required', 'string', 'max:255'],
+            'email'   => ['required', 'string', 'lowercase', 'email', 'max:255', Rule::unique('users', 'email')],
             'password' => ['required', 'string', 'min:8'],
-
+            'section' => ['nullable', 'string', 'in:agamy,dekhila'],
         ]);
+
+        $isAdmin = $request->boolean('is_admin');
+
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'is_admin' => $request->boolean('is_admin')
+            'is_admin' => $isAdmin,
+            'section'  => $isAdmin ? null : $request->section,
         ]);
         return redirect()->route('users.index')->with('success','user created successfully');
     }
@@ -68,10 +72,12 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $request->validate([
-            'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+            'name'     => ['sometimes', 'string', 'max:255'],
+            'email'    => ['sometimes', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
             'password' => ['nullable', 'string', 'min:6'],
+            'section'  => ['nullable', 'string', 'in:agamy,dekhila'],
         ]);
+
         $data = [];
 
         if ($request->filled('name')) {
@@ -86,7 +92,9 @@ class UserController extends Controller
             $data['password'] = Hash::make($request->password);
         }
 
-        $data['is_admin'] = $request->boolean('is_admin');
+        $isAdmin = $request->boolean('is_admin');
+        $data['is_admin'] = $isAdmin;
+        $data['section']  = $isAdmin ? null : $request->section;
 
         $user->update($data);
         return redirect()->route('users.index')->with('success','user updated successfully');

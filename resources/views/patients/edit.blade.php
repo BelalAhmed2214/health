@@ -234,6 +234,50 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-6">
+                                <label for="section" class="form-label fw-semibold">
+                                    <i class="bi bi-building me-1"></i>Section
+                                </label>
+                                @if(auth()->user()->isSectionUser())
+                                    {{-- Section users cannot change the section --}}
+                                    <input type="hidden" name="section" value="{{ auth()->user()->section->value }}">
+                                    <input type="text" class="form-control bg-light" value="{{ auth()->user()->section->label() }}" dir="rtl" disabled>
+                                @else
+                                    <select name="section" id="section"
+                                        class="form-select @error('section') is-invalid @enderror"
+                                        dir="rtl">
+                                        <option value="">-- اختر المنطقة --</option>
+                                        @foreach(\App\Enums\SectionEnum::cases() as $case)
+                                        <option value="{{ $case->value }}" {{ old('section', $patient->section?->value) == $case->value ? 'selected' : '' }}>
+                                            {{ $case->label() }}
+                                        </option>
+                                        @endforeach
+                                    </select>
+                                @endif
+                                @error('section')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="source_of_money" class="form-label fw-semibold">
+                                    <i class="bi bi-cash-coin me-1"></i>Source of Money
+                                </label>
+                                <select name="source_of_money" id="source_of_money"
+                                    class="form-select @error('source_of_money') is-invalid @enderror"
+                                    dir="rtl">
+                                    <option value="">-- اختر المصدر --</option>
+                                    @foreach(\App\Enums\SourceOfMoneyEnum::cases() as $case)
+                                    <option value="{{ $case->value }}" {{ old('source_of_money', $patient->source_of_money?->value) == $case->value ? 'selected' : '' }}>
+                                        {{ $case->label() }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                                @error('source_of_money')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                             <div class="col-12">
                                 <label class="form-label fw-semibold text-secondary">
                                     <i class="bi bi-sticky-fill me-1"></i>Internal Clinic Notes
