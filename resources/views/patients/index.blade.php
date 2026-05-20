@@ -8,7 +8,7 @@
     <div class="d-flex align-items-center">
         <i class="bi bi-check-circle-fill fs-4 me-3 text-success"></i>
         <div>
-            <strong class="d-block text-success">Action Completed</strong>
+            <strong class="d-block text-success">{{ __('Action Completed') }}</strong>
             <span class="text-secondary">{{ session('success') }}</span>
         </div>
     </div>
@@ -19,12 +19,12 @@
 <div class="row mb-4 align-items-center">
     <div class="col-md-6">
         <h2 class="text-secondary fw-bold mb-0">
-            <i class="bi bi-people-fill me-2 text-primary"></i>Patients Management
+            <i class="bi bi-people-fill me-2 text-primary"></i>{{ __('Patients Management') }}
         </h2>
     </div>
     <div class="col-md-6 text-end">
         <a href="{{ route('patients.create') }}" class="btn btn-primary shadow-sm">
-            <i class="bi bi-person-plus-fill me-1"></i> Add New Patient
+            <i class="bi bi-person-plus-fill me-1"></i> {{ __('Add New Patient') }}
         </a>
     </div>
 </div>
@@ -41,44 +41,44 @@
     $section       = request('section', '');
     $sourceOfMoney = request('source_of_money', '');
     $hasFilters    = $filterValue || $dateFrom || $dateTo || $isCompleted !== '' || $follower || $section || $sourceOfMoney;
-    $placeholders  = ['name' => 'Search by patient name...', 'national_id' => 'Search by national ID...', 'mobile' => 'Search by mobile number...'];
+    $placeholders  = ['name' => __('Search by patient name...'), 'national_id' => __('Search by national ID...'), 'mobile' => __('Search by mobile number...')];
 @endphp
 
 <form method="GET" action="{{ route('patients.index') }}" class="mb-4">
     <div class="row g-2 align-items-end">
         <div class="col-md-2">
-            <label class="form-label text-muted small mb-1">Filter By</label>
+            <label class="form-label text-muted small mb-1">{{ __('Filter By') }}</label>
             <select name="filter_by" class="form-select form-select-sm shadow-sm" id="filterBySelect">
-                <option value="name"        {{ $filterField === 'name'        ? 'selected' : '' }}>Patient Name</option>
-                <option value="national_id" {{ $filterField === 'national_id' ? 'selected' : '' }}>National ID</option>
-                <option value="mobile"      {{ $filterField === 'mobile'      ? 'selected' : '' }}>Mobile No.</option>
+                <option value="name"        {{ $filterField === 'name'        ? 'selected' : '' }}>{{ __('Patient Name') }}</option>
+                <option value="national_id" {{ $filterField === 'national_id' ? 'selected' : '' }}>{{ __('National ID') }}</option>
+                <option value="mobile"      {{ $filterField === 'mobile'      ? 'selected' : '' }}>{{ __('Mobile No.') }}</option>
             </select>
         </div>
         <div class="col-md-3">
-            <label class="form-label text-muted small mb-1">Search</label>
+            <label class="form-label text-muted small mb-1">{{ __('Search') }}</label>
             <input type="text" name="search" value="{{ $filterValue }}"
                 class="form-control form-control-sm shadow-sm"
                 placeholder="{{ $placeholders[$filterField] }}"
                 id="searchInput">
         </div>
         <div class="col-md-2">
-            <label class="form-label text-muted small mb-1">Status</label>
+            <label class="form-label text-muted small mb-1">{{ __('Status') }}</label>
             <select name="is_completed" class="form-select form-select-sm shadow-sm">
-                <option value=""  {{ $isCompleted === ''  ? 'selected' : '' }}>All</option>
-                <option value="0" {{ $isCompleted === '0' ? 'selected' : '' }}>Pending</option>
-                <option value="1" {{ $isCompleted === '1' ? 'selected' : '' }}>Completed</option>
+                <option value=""  {{ $isCompleted === ''  ? 'selected' : '' }}>{{ __('All') }}</option>
+                <option value="0" {{ $isCompleted === '0' ? 'selected' : '' }}>{{ __('Pending') }}</option>
+                <option value="1" {{ $isCompleted === '1' ? 'selected' : '' }}>{{ __('Completed') }}</option>
             </select>
         </div>
         <div class="col-md-2">
             <label class="form-label text-muted small mb-1">
-                <i class="bi bi-calendar-event me-1"></i>Registered From
+                <i class="bi bi-calendar-event me-1"></i>{{ __('Registered From') }}
             </label>
             <input type="date" name="date_from" value="{{ $dateFrom }}"
                 class="form-control form-control-sm shadow-sm">
         </div>
         <div class="col-md-2">
             <label class="form-label text-muted small mb-1">
-                <i class="bi bi-calendar-event-fill me-1"></i>Registered To
+                <i class="bi bi-calendar-event-fill me-1"></i>{{ __('Registered To') }}
             </label>
             <input type="date" name="date_to" value="{{ $dateTo }}"
                 class="form-control form-control-sm shadow-sm">
@@ -96,9 +96,9 @@
 
         {{-- Row 2: Enum filters --}}
         <div class="col-md-4">
-            <label class="form-label text-muted small mb-1">Follower / المتابع</label>
+            <label class="form-label text-muted small mb-1">{{ __('Follower') }}</label>
             <select name="follower" class="form-select form-select-sm shadow-sm" dir="rtl">
-                <option value="">-- All Followers --</option>
+                <option value="">{{ __('-- All Followers --') }}</option>
                 @foreach(\App\Models\Patient::followers() as $key => $label)
                 <option value="{{ $key }}" {{ $follower === $key ? 'selected' : '' }}>{{ $label }}</option>
                 @endforeach
@@ -106,9 +106,9 @@
         </div>
 
         <div class="col-md-4">
-            <label class="form-label text-muted small mb-1">Section / القسم</label>
+            <label class="form-label text-muted small mb-1">{{ __('Section') }}</label>
             <select name="section" class="form-select form-select-sm shadow-sm" dir="rtl">
-                <option value="">-- All Sections --</option>
+                <option value="">{{ __('-- All Sections --') }}</option>
                 @foreach(\App\Enums\SectionEnum::cases() as $case)
                 <option value="{{ $case->value }}" {{ $section === $case->value ? 'selected' : '' }}>{{ $case->label() }}</option>
                 @endforeach
@@ -116,9 +116,9 @@
         </div>
 
         <div class="col-md-4">
-            <label class="form-label text-muted small mb-1">Source of Money / مصدر التمويل</label>
+            <label class="form-label text-muted small mb-1">{{ __('Source of Money') }}</label>
             <select name="source_of_money" class="form-select form-select-sm shadow-sm" dir="rtl">
-                <option value="">-- All Sources --</option>
+                <option value="">{{ __('-- All Sources --') }}</option>
                 @foreach(\App\Enums\SourceOfMoneyEnum::cases() as $case)
                 <option value="{{ $case->value }}" {{ $sourceOfMoney === $case->value ? 'selected' : '' }}>{{ $case->label() }}</option>
                 @endforeach
@@ -129,9 +129,9 @@
 
 <script>
     const placeholders = {
-        name: 'Search by patient name...',
-        national_id: 'Search by national ID...',
-        mobile: 'Search by mobile number...'
+        name: '{{ __("Search by patient name...") }}',
+        national_id: '{{ __("Search by national ID...") }}',
+        mobile: '{{ __("Search by mobile number...") }}'
     };
     document.getElementById('filterBySelect').addEventListener('change', function () {
         document.getElementById('searchInput').placeholder = placeholders[this.value] || '';
@@ -144,16 +144,16 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light border-bottom text-muted">
                     <tr>
-                        <th class="ps-4 py-3">Patient Name</th>
-                        <th class="py-3">National ID</th>
-                        <th class="py-3">Mobile No.</th>
-                        <th class="py-3">Governorate</th>
-                        <th class="py-3">Status</th>
-                        <th class="py-3">Follower</th>
-                        <th class="py-3">Source</th>
-                        <th class="py-3">Section</th>
-                        <th class="py-3">Registered Date</th>
-                        <th class="text-end pe-4 py-3">Actions</th>
+                        <th class="ps-4 py-3">{{ __('Patient Name') }}</th>
+                        <th class="py-3">{{ __('National ID') }}</th>
+                        <th class="py-3">{{ __('Mobile No.') }}</th>
+                        <th class="py-3">{{ __('Governorate') }}</th>
+                        <th class="py-3">{{ __('Status') }}</th>
+                        <th class="py-3">{{ __('Follower') }}</th>
+                        <th class="py-3">{{ __('Source') }}</th>
+                        <th class="py-3">{{ __('Section') }}</th>
+                        <th class="py-3">{{ __('Registered Date') }}</th>
+                        <th class="text-end pe-4 py-3">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -170,7 +170,7 @@
                             @if($patient->mobile)
                             <i class="bi bi-telephone text-muted me-1"></i>{{ $patient->mobile }}
                             @else
-                            <span class="text-muted fs-7"><em>None</em></span>
+                            <span class="text-muted fs-7"><em>{{ __('None') }}</em></span>
                             @endif
                         </td>
 
@@ -187,9 +187,9 @@
                                 @method('PATCH')
                                 <button type="submit" class="btn btn-sm {{ $patient->is_completed ? 'btn-success' : 'btn-outline-secondary' }} px-2 py-1" title="Toggle Status">
                                     @if($patient->is_completed)
-                                        <i class="bi bi-check-circle-fill me-1"></i>Completed
+                                        <i class="bi bi-check-circle-fill me-1"></i>{{ __('Completed') }}
                                     @else
-                                        <i class="bi bi-circle me-1"></i>Pending
+                                        <i class="bi bi-circle me-1"></i>{{ __('Pending') }}
                                     @endif
                                 </button>
                             </form>
@@ -230,7 +230,7 @@
                                 </a>
 
                                 <button type="button" class="btn btn-sm btn-outline-danger" title="Remove Patient"
-                                    onclick="if(confirm('Are you absolutely sure you want to delete this patient? This will wipe out their record history.')) { document.getElementById('delete-form-{{ $patient->id }}').submit(); }">
+                                    onclick="if(confirm('{{ __('Are you absolutely sure you want to delete this patient? This will wipe out their record history.') }}')) { document.getElementById('delete-form-{{ $patient->id }}').submit(); }">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -245,7 +245,7 @@
                     <tr>
                         <td colspan="10" class="text-center py-5 text-muted">
                             <i class="bi bi-folder-x fs-1 text-secondary d-block mb-2"></i>
-                            <span class="fw-semibold">No patients recorded yet.</span>
+                            <span class="fw-semibold">{{ __('No patients recorded yet.') }}</span>
                         </td>
                     </tr>
                     @endforelse

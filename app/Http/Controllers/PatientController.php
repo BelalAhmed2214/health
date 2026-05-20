@@ -76,7 +76,7 @@ class PatientController extends Controller
         $this->authorize('update', $patient);
         $dto = UpdatePatientDTO::fromRequest($request);
         $this->patientService->updatePatient($patient_id, $dto->toArray());
-        return redirect()->route('patients.index')->with(['success' => 'Patient Updated Successfully']);
+        return redirect()->route('patients.index')->with(['success' => __('Patient Updated Successfully')]);
     }
 
     public function destroy(int $patient_id)
@@ -84,12 +84,12 @@ class PatientController extends Controller
         $patient = $this->patientService->getPatientDetails($patient_id);
         $this->authorize('delete', $patient);
         $this->patientService->deletePatient($patient_id);
-        return redirect()->route('patients.index')->with(['success' => 'Patient Deleted Successfully']);
+        return redirect()->route('patients.index')->with(['success' => __('Patient Deleted Successfully')]);
     }
 
     public function toggleCompleted(Patient $patient)
     {
         $patient->update(['is_completed' => ! $patient->is_completed]);
-        return back()->with('success', 'Patient status updated successfully.');
+        return back()->with('success', __('Patient status updated successfully.'));
     }
 }

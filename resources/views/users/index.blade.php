@@ -5,11 +5,11 @@
 @section('content')
 <div class="row mb-3">
     <div class="col-md-6">
-        <h2 class="text-secondary fw-bold"> <i class="bi bi-people-fill me-2 text-primary"></i>Users Management</h2>
+        <h2 class="text-secondary fw-bold"> <i class="bi bi-people-fill me-2 text-primary"></i>{{ __('Users Management') }}</h2>
     </div>
     <div class="col-md-6 text-end">
         <a href="{{ route('users.create') }}" class="btn btn-success">
-            <i class="bi bi-person-plus-fill me-1"></i> Create New User
+            <i class="bi bi-person-plus-fill me-1"></i> {{ __('Create New User') }}
         </a>
     </div>
 </div>
@@ -27,10 +27,10 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-primary text-white">
                     <tr>
-                        <th class="ps-4">Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th class="text-end pe-4">Actions</th>
+                        <th class="ps-4">{{ __('Name') }}</th>
+                        <th>{{ __('Email') }}</th>
+                        <th>{{ __('Role') }}</th>
+                        <th class="text-end pe-4">{{ __('Actions') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -40,21 +40,21 @@
                         <td>{{ $user->email }}</td>
                         <td>
                             @if($user->is_admin)
-                            <span class="badge bg-danger rounded-pill px-2">Admin</span>
+                            <span class="badge bg-danger rounded-pill px-2">{{ __('Admin') }}</span>
                             @else
-                            <span class="badge bg-secondary rounded-pill px-2">Staff</span>
+                            <span class="badge bg-secondary rounded-pill px-2">{{ __('Staff') }}</span>
                             @endif
                         </td>
                         <td class="text-end pe-4">
                             <a href="{{ route('users.edit', $user->id) }}" class="btn btn-sm btn-outline-primary me-1">
-                                <i class="bi bi-pencil-square"></i> Edit
+                                <i class="bi bi-pencil-square"></i> {{ __('Edit') }}
                             </a>
 
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this user?');">
+                            <form action="{{ route('users.destroy', $user->id) }}" method="POST" class="d-inline" onsubmit="return confirm('{{ __('Are you sure you want to delete this user?') }}');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-sm btn-outline-danger">
-                                    <i class="bi bi-trash"></i> Delete
+                                    <i class="bi bi-trash"></i> {{ __('Delete') }}
                                 </button>
                             </form>
                         </td>
@@ -62,7 +62,7 @@
                     @empty
                     <tr>
                         <td colspan="4" class="text-center py-4 text-muted">
-                            <i class="bi bi-people fs-2 d-block mb-2"></i> No users found.
+                            <i class="bi bi-people fs-2 d-block mb-2"></i> {{ __('No users found.') }}
                         </td>
                     </tr>
                     @endforelse
