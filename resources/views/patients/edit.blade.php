@@ -325,7 +325,7 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const container = document.getElementById('notes-container');
-    const notePlaceholder = '{{ __('Add a note...') }}';
+    const notePlaceholder = "{{ __('Add a note...') }}";
 
     document.getElementById('add-note-btn').addEventListener('click', function () {
         const item = document.createElement('div');

@@ -155,5 +155,14 @@
     "Admins can manage system settings, users, and delete clinic data records.": "Admins can manage system settings, users, and delete clinic data records.",
     "— None (Super Admin) —": "— None (Super Admin) —",
     "Leave empty if this user is a Super Admin.": "Leave empty if this user is a Super Admin.",
-    "(leave blank to keep current)": "(leave blank to keep current)"
+    "(leave blank to keep current)": "(leave blank to keep current)",
+
+    "Prices": "Prices",
+    "Financial summary across all patients": "Financial summary across all patients",
+    "Grand Total": "Grand Total",
+    "EGP": "EGP",
+    "patients": "patients",
+    "By Section": "By Section",
+    "Total Revenue": "Total Revenue",
+    "By Source of Money": "By Source of Money"
 }

@@ -50,6 +50,11 @@
                             <i class="bi bi-person-badge me-1"></i>{{ __('Users') }}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('prices.*') ? 'active fw-semibold' : '' }}" href="{{ route('prices.index') }}">
+                            <i class="bi bi-currency-dollar me-1"></i>{{ __('Prices') }}
+                        </a>
+                    </li>
                     @endif
                     @auth
                     <li class="nav-item">
@@ -68,7 +73,9 @@
                             <li>
                                 <span class="dropdown-item-text text-muted small">{{ Auth::user()->email }}</span>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
@@ -82,7 +89,7 @@
                     {{-- Language Toggle --}}
                     <li class="nav-item ms-2">
                         <a href="{{ route('locale.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
-                           class="btn btn-sm btn-outline-light fw-semibold">
+                            class="btn btn-sm btn-outline-light fw-semibold">
                             <i class="bi bi-translate me-1"></i>{{ __('locale_label') }}
                         </a>
                     </li>

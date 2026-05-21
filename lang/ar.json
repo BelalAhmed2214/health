@@ -145,5 +145,14 @@
     "Admins can manage system settings, users, and delete clinic data records.": "يمكن للمسؤولين إدارة إعدادات النظام والمستخدمين وحذف سجلات بيانات العيادة.",
     "— None (Super Admin) —": "— لا يوجد (مسؤول رئيسي) —",
     "Leave empty if this user is a Super Admin.": "اتركه فارغًا إذا كان هذا المستخدم مسؤولاً رئيسيًا.",
-    "(leave blank to keep current)": "(اتركه فارغًا للاحتفاظ بكلمة المرور الحالية)"
+    "(leave blank to keep current)": "(اتركه فارغًا للاحتفاظ بكلمة المرور الحالية)",
+
+    "Prices": "الأسعار",
+    "Financial summary across all patients": "ملخص مالي لجميع المرضى",
+    "Grand Total": "الإجمالي الكلي",
+    "EGP": "ج.م",
+    "patients": "مريض",
+    "By Section": "حسب القسم",
+    "Total Revenue": "إجمالي الإيرادات",
+    "By Source of Money": "حسب مصدر المال"
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\PriceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -31,6 +32,7 @@ Route::middleware('auth')->group(function () {
 // Super admin only: user management
 Route::middleware(['auth', 'is_admin'])->group(function () {
     Route::resource('users', UserController::class);
+    Route::get('prices', [PriceController::class, 'index'])->name('prices.index');
 });
 
 // Super admin + section users: patient management

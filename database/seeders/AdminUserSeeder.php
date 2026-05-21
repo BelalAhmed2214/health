@@ -12,7 +12,7 @@ class AdminUserSeeder extends Seeder
     {
         // Super Admin — sees everything, manages users
         User::create([
-            'name'     => 'Super Admin',
+            'name'     => 'Admin',
             'email'    => 'admin@test.com',
             'password' => Hash::make('12345678'),
             'is_admin' => true,
@@ -21,7 +21,7 @@ class AdminUserSeeder extends Seeder
 
         // Section user — Agamy
         User::create([
-            'name'     => 'Admin Agamy',
+            'name'     => 'Agamy',
             'email'    => 'agamy@test.com',
             'password' => Hash::make('12345678'),
             'is_admin' => false,
@@ -30,7 +30,7 @@ class AdminUserSeeder extends Seeder
 
         // Section user — Dekhila
         User::create([
-            'name'     => 'Admin Dekhila',
+            'name'     => 'Dekhila',
             'email'    => 'dekhila@test.com',
             'password' => Hash::make('12345678'),
             'is_admin' => false,
