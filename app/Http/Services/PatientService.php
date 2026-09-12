@@ -18,7 +18,7 @@ class PatientService
 
     public function filterPatients(array $filters)
     {
-        return $this->patientRepository->filter($filters)->paginate(5)->withQueryString();
+        return $this->patientRepository->filter($filters)->paginate(10)->withQueryString();
     }
     public function getPatientDetails(int $patient_id)
     {

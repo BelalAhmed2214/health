@@ -32,7 +32,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand" href="#">
-                <i class="bi bi-heart-pulse-fill me-2"></i>HealthCare Clinic
+                <i class="bi bi-heart-pulse-fill me-2"></i>Al Nour Clinic
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
