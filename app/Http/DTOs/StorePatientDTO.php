@@ -21,6 +21,8 @@ class StorePatientDTO{
         public ?float $price,
         public ?string $follower,
         public int $user_id,
+        public ?string $section,
+        public ?string $source_of_money
     ){}
     public static function fromRequest(Request $request): self
     {
@@ -40,6 +42,8 @@ class StorePatientDTO{
             price: $request->price,
             follower: $request->follower,
             user_id: Auth::id(),
+            section: $request->section,
+            source_of_money: $request->source_of_money,
         );
     }
     public function toArray(): array
@@ -60,6 +64,8 @@ class StorePatientDTO{
             'price'          => $this->price,
             'follower'       => $this->follower,
             'user_id'        => Auth::id(),
+            'section'         => $this->section,
+            'source_of_money' => $this->source_of_money,
         ];
     }
 }

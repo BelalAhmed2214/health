@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\SectionEnum;
+use App\Enums\SourceOfMoneyEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -43,6 +45,8 @@ class UpdatePatientRequest extends FormRequest
             'is_completed'   => ['nullable', 'boolean'],
             'price'          => ['nullable', 'numeric', 'min:0'],
             'follower'       => ['nullable', 'string', Rule::in($followers)],
+            'section'         => ['nullable', Rule::enum(SectionEnum::class)],
+            'source_of_money' => ['nullable', Rule::enum(SourceOfMoneyEnum::class)],
         ];
     }
 }

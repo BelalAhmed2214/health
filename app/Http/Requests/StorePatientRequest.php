@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\SectionEnum;
+use App\Enums\SourceOfMoneyEnum;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -21,7 +23,7 @@ class StorePatientRequest extends FormRequest
      *
      * @return array<string, ValidationRule|array<mixed>|string>
      */
-     public function rules(): array
+    public function rules(): array
     {
         $followers = array_keys(\App\Models\Patient::followers());
         return [
@@ -40,6 +42,8 @@ class StorePatientRequest extends FormRequest
             'visit_date'     => ['nullable', 'date'],
             'price'          => ['nullable', 'numeric', 'min:0'],
             'follower'       => ['nullable', 'string', Rule::in($followers)],
+            'section'         => ['nullable', Rule::enum(SectionEnum::class)],
+            'source_of_money' => ['nullable', Rule::enum(SourceOfMoneyEnum::class)],
         ];
     }
 }

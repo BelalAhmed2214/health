@@ -36,6 +36,8 @@ return new class extends Migration
             $table->boolean('is_completed')->default(false);
             $table->decimal('price', 10, 2)->nullable();
             $table->string('follower')->nullable();
+            $table->string('section')->nullable();
+            $table->string('source_of_money')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
 
             $table->timestamps();

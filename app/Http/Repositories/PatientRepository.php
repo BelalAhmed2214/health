@@ -48,6 +48,21 @@ class PatientRepository
             $query->where('is_completed', (bool) $filters['is_completed']);
         }
 
+        $query->when(
+            $filters['follower'] ?? null,
+            fn($q, $follower) => $q->where('follower', $follower)
+        );
+
+        $query->when(
+            $filters['source_of_money'] ?? null,
+            fn($q, $source) => $q->where('source_of_money', $source)
+        );
+
+        $query->when(
+            $filters['section'] ?? null,
+            fn($q, $section) => $q->where('section', $section)
+        );
+
         $query->orderBy('visit_date', 'desc');
 
         return $query;

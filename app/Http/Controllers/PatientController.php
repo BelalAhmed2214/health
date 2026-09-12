@@ -17,19 +17,25 @@ class PatientController extends Controller
 
     public function index(Request $request)
     {
-        $search      = $request->input('search');
-        $filterBy    = $request->input('filter_by', 'name');
-        $dateFrom    = $request->input('date_from');
-        $dateTo      = $request->input('date_to');
-        $isCompleted = $request->input('is_completed', '');
+        $search        = $request->input('search');
+        $filterBy      = $request->input('filter_by', 'name');
+        $dateFrom      = $request->input('date_from');
+        $dateTo        = $request->input('date_to');
+        $isCompleted   = $request->input('is_completed', '');
+        $follower      = $request->input('follower');
+        $section       = $request->input('section');
+        $sourceOfMoney = $request->input('source_of_money');
 
         $filters = [];
-        if ($search)                     $filters[$filterBy]    = $search;
-        if ($dateFrom)                   $filters['date_from']  = $dateFrom;
-        if ($dateTo)                     $filters['date_to']    = $dateTo;
-        if ($isCompleted !== '')         $filters['is_completed'] = $isCompleted;
+        if ($search)           $filters[$filterBy]        = $search;
+        if ($dateFrom)         $filters['date_from']       = $dateFrom;
+        if ($dateTo)           $filters['date_to']         = $dateTo;
+        if ($isCompleted !== '') $filters['is_completed']  = $isCompleted;
+        if ($follower)         $filters['follower']        = $follower;
+        if ($section)          $filters['section']         = $section;
+        if ($sourceOfMoney)    $filters['source_of_money'] = $sourceOfMoney;
 
-        $patients = ($filters || $isCompleted !== '')
+        $patients = $filters
             ? $this->patientService->filterPatients($filters)
             : $this->patientService->getPatientData();
 
@@ -52,32 +58,38 @@ class PatientController extends Controller
     public function show(int $patient_id)
     {
         $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('view', $patient);
         return view('patients.show', compact('patient'));
     }
 
     public function edit(int $patient_id)
     {
         $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('update', $patient);
         $governorates = $this->patientService->getEgyptianGovernorates();
         return view('patients.edit', compact('patient', 'governorates'));
     }
 
     public function update(UpdatePatientRequest $request, int $patient_id)
     {
+        $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('update', $patient);
         $dto = UpdatePatientDTO::fromRequest($request);
         $this->patientService->updatePatient($patient_id, $dto->toArray());
-        return redirect()->route('patients.index')->with(['success' => 'Patient Updated Successfully']);
+        return redirect()->route('patients.index')->with(['success' => __('Patient Updated Successfully')]);
     }
 
     public function destroy(int $patient_id)
     {
+        $patient = $this->patientService->getPatientDetails($patient_id);
+        $this->authorize('delete', $patient);
         $this->patientService->deletePatient($patient_id);
-        return redirect()->route('patients.index')->with(['success' => 'Patient Deleted Successfully']);
+        return redirect()->route('patients.index')->with(['success' => __('Patient Deleted Successfully')]);
     }
 
     public function toggleCompleted(Patient $patient)
     {
         $patient->update(['is_completed' => ! $patient->is_completed]);
-        return back()->with('success', 'Patient status updated successfully.');
+        return back()->with('success', __('Patient status updated successfully.'));
     }
 }

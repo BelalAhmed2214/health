@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ __('direction') }}">
 
 <head>
     <meta charset="UTF-8">
@@ -41,19 +41,28 @@
                 <ul class="navbar-nav ms-auto align-items-center">
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('dashboard') ? 'active fw-semibold' : '' }}" href="{{ route('dashboard') }}">
-                            <i class="bi bi-speedometer2 me-1"></i>Dashboard
+                            <i class="bi bi-speedometer2 me-1"></i>{{ __('Dashboard') }}
                         </a>
                     </li>
+                    @if(Auth::check() && Auth::user()->isSuperAdmin())
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('users.*') ? 'active fw-semibold' : '' }}" href="{{ route('users.index') }}">
-                            <i class="bi bi-person-badge me-1"></i>Users
+                            <i class="bi bi-person-badge me-1"></i>{{ __('Users') }}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('patients.*') ? 'active fw-semibold' : '' }}" href="{{ route('patients.index') }}">
-                            <i class="bi bi-people me-1"></i>Patients
+                        <a class="nav-link {{ request()->routeIs('prices.*') ? 'active fw-semibold' : '' }}" href="{{ route('prices.index') }}">
+                            <i class="bi bi-currency-dollar me-1"></i>{{ __('Prices') }}
                         </a>
                     </li>
+                    @endif
+                    @auth
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('patients.*') ? 'active fw-semibold' : '' }}" href="{{ route('patients.index') }}">
+                            <i class="bi bi-people me-1"></i>{{ __('Patients') }}
+                        </a>
+                    </li>
+                    @endauth
                     @auth
                     <li class="nav-item ms-3 dropdown">
                         <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown">
@@ -64,16 +73,25 @@
                             <li>
                                 <span class="dropdown-item-text text-muted small">{{ Auth::user()->email }}</span>
                             </li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="dropdown-item text-danger">
-                                        <i class="bi bi-box-arrow-right me-2"></i>Logout
+                                        <i class="bi bi-box-arrow-right me-2"></i>{{ __('Logout') }}
                                     </button>
                                 </form>
                             </li>
                         </ul>
+                    </li>
+                    {{-- Language Toggle --}}
+                    <li class="nav-item ms-2">
+                        <a href="{{ route('locale.switch', app()->getLocale() === 'ar' ? 'en' : 'ar') }}"
+                            class="btn btn-sm btn-outline-light fw-semibold">
+                            <i class="bi bi-translate me-1"></i>{{ __('locale_label') }}
+                        </a>
                     </li>
                     @endauth
                 </ul>
